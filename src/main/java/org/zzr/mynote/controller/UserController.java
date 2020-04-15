@@ -1,11 +1,10 @@
 package org.zzr.mynote.controller;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.zzr.mynote.common.response.MyResponseEntity;
 import org.zzr.mynote.entity.UserInfo;
 import org.zzr.mynote.service.UserService;
 
@@ -25,14 +24,10 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    // ResponseEntity 返回的数据类型为标准格式的 HTTP 应答
-    public ResponseEntity getAll(){
+    // MyResponseEntity 返回的数据类型为标准格式的 HTTP 应答
+    public MyResponseEntity getAll() throws Exception {
         List<UserInfo> list = userService.getAll();
-        // 返回的 HTTP 应答码为 200 OK
-        return ResponseEntity.ok()
-                // 返回的 HTTP 内容类型为 JSON 格式
-                .contentType(MediaType.APPLICATION_JSON)
-                // 将查询到的用户列表放在 HTTP Body 中返回
-                .body(list);
+        return MyResponseEntity.success(list);
+
     }
 }
