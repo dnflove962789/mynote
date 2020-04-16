@@ -1,4 +1,4 @@
-package org.zzr.mynote.controller;
+package org.zzr.mynote.web;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
