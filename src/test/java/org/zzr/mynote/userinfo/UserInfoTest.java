@@ -39,6 +39,6 @@ public class UserInfoTest {
     @Test
     public void selectByWrapper(){
         QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
-       
+
     }
 }
