@@ -63,7 +63,7 @@ import java.util.*;
             // dsc.setSchemaName("public");
             dsc.setDriverName("com.mysql.cj.jdbc.Driver");
             dsc.setUsername("root");
-            dsc.setPassword("123456");
+            dsc.setPassword("962789love");
 
             mpg.setDataSource(dsc);
 

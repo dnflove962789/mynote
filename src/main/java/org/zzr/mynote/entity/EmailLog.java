@@ -26,6 +26,9 @@ public class EmailLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId
+    private Integer id;
+
     /**
      * 邮件发送类型,不能为空
      */
