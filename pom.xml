@@ -46,6 +46,11 @@
 			<artifactId>freemarker</artifactId>
 			<version>2.3.30</version>
 		</dependency>
+		<dependency>
+			<groupId>p6spy</groupId>
+			<artifactId>p6spy</artifactId>
+			<version>3.8.7</version>
+		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -84,7 +89,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<resources>
+		<!--<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
@@ -94,7 +99,7 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
-		</resources>
+		</resources>-->
 	</build>
 
 </project>

@@ -20,5 +20,7 @@
         id,
         type, password, email, createTime, status, isDelete, updateTime, updateUserId
     </sql>
-
+    <select id="selectUserInfoPage" resultType="org.zzr.mynote.entity.UserInfo">
+        select * from user_info ${ew.customSqlSegment}
+    </select>
 </mapper>

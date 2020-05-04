@@ -1,10 +1,8 @@
 package org.zzr.mynote.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +24,7 @@ public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -44,7 +42,7 @@ public class UserInfo implements Serializable {
      */
     private String email;
 
-    @TableField("createTime")
+    @TableField(value = "createTime",fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
@@ -52,10 +50,11 @@ public class UserInfo implements Serializable {
      */
     private Integer status;
 
-    @TableField("isDelete")
-    private Integer isDelete;
+    @TableField(value = "isDelete",select = false)
+    @TableLogic
+    private Integer isDelete =0;
 
-    @TableField("updateTime")
+    @TableField(value = "updateTime",fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
     @TableField("updateUserId")
