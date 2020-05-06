@@ -1,4 +1,4 @@
-package org.zzr.mynote.common.tools;
+package org.zzr.mynote.common.util;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
