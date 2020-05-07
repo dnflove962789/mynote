@@ -11,6 +11,11 @@ import org.springframework.http.ResponseEntity;
  * 规定Controller统一的消息返回格式
  */
 public class Response {
+
+    public static ResponseEntity ok(Object object){
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(object);
+    }
+
     /**
      * 返回OK
      * @param object

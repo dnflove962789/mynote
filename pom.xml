@@ -79,10 +79,17 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!--fastjsonjson-->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.68</version>
+		</dependency>
+		<!--javax mail-->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
 		</dependency>
 
 	</dependencies>
