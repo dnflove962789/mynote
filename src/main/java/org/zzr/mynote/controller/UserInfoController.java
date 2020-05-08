@@ -1,6 +1,7 @@
 package org.zzr.mynote.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,10 @@ public class UserInfoController {
     }
 
     @GetMapping("/getByEmail")
-    public ResponseEntity getByEmail(@RequestParam(required = true) String email){
+    public ResponseEntity getByEmail(String email){
+        if(StringUtils.isBlank(email)){
+            return Response.badRequest();
+        }
         UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getEmail, email));
         return Response.ok(userInfo);
     }

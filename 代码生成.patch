@@ -1,0 +1,146 @@
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pom.xml	(revision ee1789fde8d9860501e1ea2f77162741a773fc70)
++++ pom.xml	(date 1587017637934)
+@@ -24,10 +24,27 @@
+ 			<artifactId>spring-boot-starter-web</artifactId>
+ 		</dependency>
+ 
++<!--		<dependency>-->
++<!--			<groupId>org.mybatis.spring.boot</groupId>-->
++<!--			<artifactId>mybatis-spring-boot-starter</artifactId>-->
++<!--			<version>2.1.2</version>-->
++<!--		</dependency>-->
++
++		<!--MyBatisPlus-->
++		<dependency>
++			<groupId>com.baomidou</groupId>
++			<artifactId>mybatis-plus</artifactId>
++			<version>3.3.1.tmp</version>
++		</dependency>
++		<dependency>
++			<groupId>com.baomidou</groupId>
++			<artifactId>mybatis-plus-generator</artifactId>
++			<version>3.3.1.tmp</version>
++		</dependency>
+ 		<dependency>
+-			<groupId>org.mybatis.spring.boot</groupId>
+-			<artifactId>mybatis-spring-boot-starter</artifactId>
+-			<version>2.1.2</version>
++			<groupId>org.freemarker</groupId>
++			<artifactId>freemarker</artifactId>
++			<version>2.3.30</version>
+ 		</dependency>
+ 
+ 		<dependency>
+@@ -59,7 +76,44 @@
+ 				<groupId>org.springframework.boot</groupId>
+ 				<artifactId>spring-boot-maven-plugin</artifactId>
+ 			</plugin>
++			<plugin>
++				<groupId>org.mybatis.generator</groupId>
++				<artifactId>mybatis-generator-maven-plugin</artifactId>
++				<version>1.4.0</version>
++				<dependencies>
++					<dependency>
++						<groupId> mysql</groupId>
++						<artifactId> mysql-connector-java</artifactId>
++						<version> 8.0.16</version>
++					</dependency>
++					<dependency>
++						<groupId>org.mybatis.generator</groupId>
++						<artifactId>mybatis-generator-core</artifactId>
++						<version>1.4.0</version>
++					</dependency>
++				</dependencies>
++				<executions>
++					<execution>
++						<id>Generate MyBatis Artifacts</id>
++						<phase>package</phase>
++						<goals>
++							<goal>generate</goal>
++						</goals>
++					</execution>
++				</executions>
++			</plugin>
+ 		</plugins>
++		<resources>
++			<resource>
++				<directory>src/main/java</directory>
++				<includes>
++					<include>**/*.xml</include>
++				</includes>
++			</resource>
++			<resource>
++				<directory>src/main/resources</directory>
++			</resource>
++		</resources>
+ 	</build>
+ 
+ </project>
+Index: src/main/java/org/zzr/mynote/controller/UserController.java
+===================================================================
+--- src/main/java/org/zzr/mynote/controller/UserController.java	(revision ee1789fde8d9860501e1ea2f77162741a773fc70)
++++ src/main/java/org/zzr/mynote/web/UserController.java	(date 1586934838040)
+@@ -1,4 +1,4 @@
+-package org.zzr.mynote.controller;
++package org.zzr.mynote.web;
+ 
+ import org.springframework.web.bind.annotation.CrossOrigin;
+ import org.springframework.web.bind.annotation.GetMapping;
+Index: src/main/resources/generatorConfig.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/generatorConfig.xml	(date 1587021436598)
++++ src/main/resources/generatorConfig.xml	(date 1587021436598)
+@@ -0,0 +1,44 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE generatorConfiguration
++        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
++        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
++<generatorConfiguration>
++    <context id="simple" targetRuntime="MyBatis3">
++        <commentGenerator>
++            <property name="suppressDate" value="true"/>
++            <property name="suppressAllComments" value="true"/>
++        </commentGenerator>
++        <!--数据库链接地址账号密码-->
++        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/myms?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=Asia/Shanghai"
++                        userId="root" password="962789love">
++        </jdbcConnection>
++
++        <javaTypeResolver>
++            <property name="forceBigDecimals" value="false"/>
++        </javaTypeResolver>
++        <!--生成Model类存放位置-->
++        <javaModelGenerator targetPackage="org.zzr.mynote.entity" targetProject="src/main/java">
++            <!--<property name="enableSubPackages" value="true"/>-->
++            <property name="trimStrings" value="true"/>
++        </javaModelGenerator>
++        <!--生成映射文件存放位置-->
++        <sqlMapGenerator targetPackage="org.zzr.mynote.mapper" targetProject="src/main/java">
++            <!--<property name="enableSubPackages" value="true"/>-->
++        </sqlMapGenerator>
++        <!--生成Dao类存放位置-->
++        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
++                type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
++                type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
++                type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
++        -->
++        <javaClientGenerator type="XMLMAPPER" targetPackage="org.zzr.mynote.mapper" targetProject="src/main/java">
++            <property name="enableSubPackages" value="true"/>
++        </javaClientGenerator>
++        <!--<table tableName="t_user"  domainObjectName="User" catalog="myms" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
++<!--        <table tableName="email_log"  domainObjectName="EmailLog"  enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
++                <table tableName="email_log"  domainObjectName="EmailLog"  ></table>
++
++        <!--<table tableName="t_power"  domainObjectName="Power" catalog="myms" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
++
++    </context>
++</generatorConfiguration>
+\ No newline at end of file
