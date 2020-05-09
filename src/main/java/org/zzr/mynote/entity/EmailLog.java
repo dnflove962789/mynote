@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 邮件发送表
  * </p>
  *
  * @author zzr

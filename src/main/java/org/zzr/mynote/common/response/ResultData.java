@@ -1,84 +1,39 @@
 package org.zzr.mynote.common.response;
 
+import java.util.HashMap;
+
 /**
- * 规定Service统一的消息返回格式
- * 在Controller中统一返回ResponseEntity格式的数据，在ResponseEntity的body里，必须使用MyResponseObject格式的数据
- * @author yangkaile
- * @date 2018-11-22 10:54:01
+ * 相应返回实体
  */
-public class ResultData {
+public class ResultData extends HashMap<String, Object> {
 
-    /**
-     * 业务状态 0：成功  1：失败
-     */
-    private int success ;
-    /**
-     * 返回数据
-     */
-    private Object data ;
-    /**
-     * 文字描述，一般放业务处理失败时返回的错误信息
-     */
-    private String message ;
+    private final static int SUCCESS_CODE = 0;
+    private final static int FAIL_CODE = 1;
 
-    public final static int SUCCESS_CODE_SUCCESS = 0;
-    public final static int SUCCESS_CODE_FAILED = 1;
-
-    public ResultData() {
+    public ResultData success(){
+        this.put("code", SUCCESS_CODE);
+        return this;
     }
 
-    public static ResultData success() {
-        ResultData resultData = new ResultData();
-        resultData.setSuccess(SUCCESS_CODE_SUCCESS);
-        return resultData;
-    }
-    public static ResultData success(Object data) {
-        ResultData resultData = new ResultData();
-        resultData.setSuccess(SUCCESS_CODE_SUCCESS);
-        resultData.setData(data);
-        return resultData;
-    }
-    public static ResultData error(String message) {
-        ResultData resultData = new ResultData();
-        resultData.setSuccess(SUCCESS_CODE_FAILED);
-        resultData.setMessage(message);
-        return resultData;
-    }
-    public boolean isSuccess(){
-        return success == SUCCESS_CODE_SUCCESS;
+    public ResultData fail(){
+        this.put("code", FAIL_CODE);
+        return this;
     }
 
-
-    public int getSuccess() {
-        return success;
+    public ResultData message(String message){
+        this.put("message", message);
+        return this;
     }
 
-    public void setSuccess(int success) {
-        this.success = success;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public ResultData data(Object data){
+        this.put("data", data);
+        return this;
     }
 
     @Override
-    public String toString() {
-        return "ResultData{" +
-                "success=" + success +
-                ", data=" + data +
-                ", message='" + message + '\'' +
-                '}';
+    public ResultData put(String key, Object data){
+        super.put(key, data);
+        return this;
     }
+
 }

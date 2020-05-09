@@ -4,7 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.zzr.mynote.common.response.Response;
-import org.zzr.mynote.common.response.ResultData;
+import org.zzr.mynote.common.response.ResultData2;
 
 /**
  *
@@ -25,7 +25,7 @@ public class ResponseUtils {
                 case UNAUTHORIZED: response = Response.unauthorized();break;
                 case INTERNAL_SERVER_ERROR: response = Response.error();break;
                 default:{
-                    ResultData resultData = ResultData.error("ERROR");
+                    ResultData2 resultData = ResultData2.error("ERROR");
                     response = ResponseEntity.status(errorException.getStatusCode()).contentType(MediaType.APPLICATION_JSON).body(resultData);
                 }
             }
@@ -35,7 +35,7 @@ public class ResponseUtils {
         return  response;
     }
 
-    public static ResultData getResultDataFromException(HttpClientErrorException exception){
-        return  (ResultData)getResponseFromException(exception).getBody();
+    public static ResultData2 getResultDataFromException(HttpClientErrorException exception){
+        return  (ResultData2)getResponseFromException(exception).getBody();
     }
 }

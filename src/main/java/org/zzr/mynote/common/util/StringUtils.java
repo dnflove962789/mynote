@@ -2,10 +2,18 @@ package org.zzr.mynote.common.util;
 
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils {
     public static final String numbersChar = "0123456789";
-    public static final String allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    public static final String allChar = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+
+    /**
+     * 邮箱校验规则：**@**.**
+     */
+    private static final String EMAIL_ADDRESS_PATTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|" +
+            "(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
     /**
      * 判断一系列字符串中是否有空的（包含:空字符串、null、纯空格字符）
@@ -22,6 +30,20 @@ public class StringUtils {
     }
     public static boolean isNotEmpty(String... parameters){
         return !isEmpty(parameters);
+    }
+
+    /**
+     * 验证邮箱是否正确
+     * @param email
+     * @return
+     */
+    public static boolean isEmail(String email) {
+        if(isEmpty(email)){
+            return false;
+        }
+        Pattern pattern = Pattern.compile(EMAIL_ADDRESS_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     /**
@@ -51,6 +73,12 @@ public class StringUtils {
         return sb.toString();
     }
 
+    /**
+     * 生成指定长度的数字字母字符串
+     * @param length
+     *  字符串长度
+     * @return
+     */
     public static String getAllCharString(int length){
         StringBuffer sb = new StringBuffer();
         Random random = new Random();

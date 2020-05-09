@@ -40,6 +40,6 @@ public class UserInfoController {
             return Response.badRequest();
         }
         UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getEmail, email));
-        return Response.ok(userInfo);
+        return Response.ok(new ResultData().success().data(userInfo));
     }
 }

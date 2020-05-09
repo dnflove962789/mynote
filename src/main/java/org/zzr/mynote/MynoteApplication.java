@@ -1,13 +1,14 @@
 package org.zzr.mynote;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jms.annotation.EnableJms;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
+@EnableJms
 public class MynoteApplication {
 
 	@Bean
