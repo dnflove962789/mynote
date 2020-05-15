@@ -1,5 +1,7 @@
 package org.zzr.mynote.service;
 
+import org.springframework.mail.MailException;
+import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.entity.EmailLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IEmailLogService extends IService<EmailLog> {
 
+    ResultData sendSimpleMail(String to) throws MailException;
 }

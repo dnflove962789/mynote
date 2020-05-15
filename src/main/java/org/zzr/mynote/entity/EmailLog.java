@@ -69,7 +69,7 @@ public class EmailLog extends Model<EmailLog> implements Serializable {
     /**
      * 发送时间
      */
-    @TableField("createTime")
+    @TableField(value = "createTime",fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**

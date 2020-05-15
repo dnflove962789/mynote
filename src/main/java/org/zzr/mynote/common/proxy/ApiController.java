@@ -54,6 +54,7 @@ public class ApiController {
             responseEntity = restTemplate.postForEntity(RequestUtils.getUrl(params, request), null, String.class, params);
             RequestUtils.successLog(request,params,responseEntity);
         }catch (Exception e){
+            e.printStackTrace();
             responseEntity = ResponseUtils.getResponseFromException(e);
             RequestUtils.errorLog(request, params, responseEntity);
         }

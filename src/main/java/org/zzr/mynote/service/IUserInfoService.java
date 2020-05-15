@@ -1,5 +1,6 @@
 package org.zzr.mynote.service;
 
+import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.entity.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserInfoService extends IService<UserInfo> {
 
+    public ResultData registerUser(UserInfo userInfo, String code);
 }

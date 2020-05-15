@@ -58,6 +58,7 @@ public class FormController {
             responseEntity = restTemplate.postForEntity(RequestUtils.getUrl(map,request),null, String.class, map);
             RequestUtils.successLog(request,responseEntity);
         }catch (Exception e){
+            e.printStackTrace();
             responseEntity = ResponseUtils.getResponseFromException(e);
             RequestUtils.errorLog(request,responseEntity);
         }
