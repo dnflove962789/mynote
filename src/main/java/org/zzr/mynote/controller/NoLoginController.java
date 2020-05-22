@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 @RestController
-@RequestMapping("//no-login")
+@RequestMapping("/no-login")
 public class NoLoginController {
 
     @Resource
