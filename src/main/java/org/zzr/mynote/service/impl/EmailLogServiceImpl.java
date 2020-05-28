@@ -57,7 +57,7 @@ public class EmailLogServiceImpl extends ServiceImpl<EmailLogMapper, EmailLog> i
             emailLogMapper.insert(emailLog);
             //发送邮件
             mailSender.send(message);
-            return new ResultData().fail().message("成功发送邮件");
+            return new ResultData().success().message("成功发送邮件");
         } catch (MailException e) {
             e.printStackTrace();
             emailLog.setResult(e.getMessage());

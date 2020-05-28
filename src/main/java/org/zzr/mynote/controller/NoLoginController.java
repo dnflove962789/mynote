@@ -18,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/no-login")
+@CrossOrigin(origins = "*",allowedHeaders="*", maxAge = 3600)
 public class NoLoginController {
 
     @Resource
