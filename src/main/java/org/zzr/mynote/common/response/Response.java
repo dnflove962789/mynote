@@ -21,7 +21,7 @@ public class Response {
      * @param object
      * @return
      */
-    public static ResponseEntity ok(ResultData2 object){
+    public static ResponseEntity ok(ResultData object){
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON).body(object);
     }
@@ -31,7 +31,7 @@ public class Response {
      * @return
      */
     public static ResponseEntity ok(){
-        ResultData2 response = ResultData2.success();
+        ResultData response = new ResultData().success();
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }
@@ -41,7 +41,7 @@ public class Response {
      * @return
      */
     public static ResponseEntity badRequest(){
-        ResultData2 response = ResultData2.error("请求参数异常");
+        ResultData response = new ResultData().fail().message("请求参数异常");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }
@@ -51,7 +51,7 @@ public class Response {
      * @return
      */
     public static ResponseEntity unauthorized(){
-        ResultData2 response = ResultData2.error("用户未登录");
+        ResultData response = new ResultData().fail().message("用户未登录");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }
@@ -61,7 +61,7 @@ public class Response {
      * @return
      */
     public static ResponseEntity forbidden(){
-        ResultData2 response = ResultData2.error("没有权限");
+        ResultData response = new ResultData().fail().message("没有权限");
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }
@@ -71,7 +71,7 @@ public class Response {
      * @return
      */
     public static ResponseEntity error(){
-        ResultData2 response = ResultData2.error("系统错误");
+        ResultData response = new ResultData().fail().message("系统错误");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .contentType(MediaType.APPLICATION_JSON).body(response);
     }

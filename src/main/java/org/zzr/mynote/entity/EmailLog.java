@@ -75,6 +75,7 @@ public class EmailLog extends Model<EmailLog> implements Serializable {
     /**
      * 验证码是否已使用
      */
+    @TableField("isUsed")
     private Integer isUsed;
 
 

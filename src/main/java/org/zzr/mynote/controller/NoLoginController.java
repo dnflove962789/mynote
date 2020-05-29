@@ -69,4 +69,42 @@ public class NoLoginController {
         ResultData resultData = userInfoService.registerUser(userInfo, code);
         return Response.ok(resultData);
     }
+
+    /**
+     * 账号密码登录
+     * @param params
+     * @return
+     */
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody Map<String,String> params){
+        String email = params.get("email");
+        String password = params.get("password");
+        int type = Integer.parseInt(params.get("type"));
+        if(StringUtils.isEmpty(password) || !StringUtils.isEmail(email)){
+            return Response.badRequest();
+        }
+        UserInfo userInfo = new UserInfo();
+        userInfo.setEmail(email);
+        userInfo.setPassword(password);
+        userInfo.setType(type);
+        return Response.ok(userInfoService.login(userInfo));
+    }
+
+    /**
+     * 账号密码登录
+     * @param params
+     * @return
+     */
+    @PostMapping("/loginWithCode")
+    public ResponseEntity loginWithCode(@RequestBody Map<String,String> params){
+        String email = params.get("email");
+        String code = params.get("code");
+        int type = Integer.parseInt(params.get("type"));
+        if(StringUtils.isEmpty(code) || !StringUtils.isEmail(email)){
+            return Response.badRequest();
+        }
+        return Response.ok(userInfoService.loginWithCode(email, type, code));
+    }
+
+
 }

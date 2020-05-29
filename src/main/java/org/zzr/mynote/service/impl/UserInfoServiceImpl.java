@@ -3,6 +3,7 @@ package org.zzr.mynote.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zzr.mynote.common.response.ResultData;
+import org.zzr.mynote.common.util.JwtUtils;
 import org.zzr.mynote.entity.EmailLog;
 import org.zzr.mynote.entity.UserInfo;
 import org.zzr.mynote.mapper.EmailLogMapper;
@@ -61,10 +62,34 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
           if(selectOne == null){
                //可以插入
                userInfoMapper.insert(userInfo);
-               return new ResultData().fail().message("账号已注册");
+               return new ResultData().success().message("账号注册成功");
           }else{
                return new ResultData().fail().message("账号已注册");
           }
 
+     }
+
+     /**
+      * 登录
+      * @param userInfo
+      * @return
+      */
+     public ResultData login(UserInfo userInfo){
+          UserInfo selectOne = userInfoMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
+                  .eq(UserInfo::getEmail, userInfo.getEmail())
+                  .eq(UserInfo::getType, userInfo.getType())
+          );
+          if(selectOne == null){
+               return new ResultData().fail().message("该用户尚未注册");
+          }
+          //校验密码
+          if(userInfo.getPassword().equals(selectOne.getPassword())){
+               return new ResultData().success().data(JwtUtils.getJwtString(userInfo));
+          }
+          return new ResultData().fail().message("账号或密码错误");
+     }
+
+     public ResultData loginWithCode(String email,int type,String code){
+          return null;
      }
 }

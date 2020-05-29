@@ -31,4 +31,9 @@ public class PublicConstant {
      * 业务失败标示
      */
     public static final int FAILED = 1;
+
+    /**
+     * 应用名
+     */
+    public static String APP_NAME = "ThisIsMyNote" ;
 }

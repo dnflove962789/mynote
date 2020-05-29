@@ -14,6 +14,8 @@ import org.zzr.mynote.service.IEmailLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * <p>
  *  服务实现类
@@ -58,7 +60,7 @@ public class EmailLogServiceImpl extends ServiceImpl<EmailLogMapper, EmailLog> i
             //发送邮件
             mailSender.send(message);
             return new ResultData().success().message("成功发送邮件");
-        } catch (MailException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             emailLog.setResult(e.getMessage());
             emailLog.setStatusCode(PublicConstant.FAILED);
