@@ -19,5 +19,5 @@ public interface IUserInfoService extends IService<UserInfo> {
 
     public ResultData login(UserInfo userInfo);
 
-    ResultData loginWithCode(EmailLog emailLog, int type);
+    public ResultData loginWithCode(EmailLog emailLog, int type);
 }

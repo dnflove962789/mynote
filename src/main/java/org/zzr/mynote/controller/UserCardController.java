@@ -3,6 +3,7 @@ package org.zzr.mynote.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,10 +30,18 @@ public class UserCardController {
      * 设置用户名片接口
      */
     @PostMapping
-    public ResponseEntity setUserCard(Integer kellerUserId, String nickName, String email, String label){
-        if(kellerUserId != null && StringUtils.isNotEmpty(nickName,email,label)){
+    public ResponseEntity setUserCard(Integer userId, String nickName, String email, String label){
+        if(userId != null && StringUtils.isNotEmpty(nickName,email,label)){
             return Response.ok(
-                    userCardService.setUserCard(kellerUserId,nickName,email,label));
+                    userCardService.setUserCard(userId,nickName,email,label));
+        }
+        return Response.badRequest();
+    }
+
+    @GetMapping
+    public ResponseEntity getUserCard(Integer userId){
+        if(userId != null){
+            return Response.ok(userCardService.getUserCard(userId));
         }
         return Response.badRequest();
     }

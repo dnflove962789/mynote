@@ -35,17 +35,35 @@ public class UserCard implements Serializable {
      */
     private String email;
 
-    /**
+  /*  *//**
      * 头像原图
-     */
+     *//*
     @TableField("imgUrl")
-    private String imgUrl;
+    private String imgUrl;*/
+
+    /**
+     * 用户头像最初的文件名
+     */
+    @TableField("portraitOriginName")
+    private String portraitOriginName;
+
+    /**
+     * 用户头像名称
+     */
+    @TableField("portraitName")
+    private String portraitName;
 
     /**
      * 头像缩略图
      */
     @TableField("thumUrl")
     private String thumUrl;
+
+    /**
+     * 个人签名
+     */
+    @TableField("label")
+    private String label;
 
     @TableField(value = "createTime", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
@@ -56,5 +74,7 @@ public class UserCard implements Serializable {
     @TableField("updateUserId")
     private Integer updateUserId;
 
+    private String protraitUrl;
 
+    private String protraitThumUrl;
 }
