@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zzr.mynote.mapper.UserCardMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.zzr.mynote.entity.UserCard">
+        <id column="userId" property="userId" />
+        <result column="nickName" property="nickName" />
+        <result column="email" property="email" />
+        <result column="imgUrl" property="imgUrl" />
+        <result column="thumUrl" property="thumUrl" />
+        <result column="createTime" property="createTime" />
+        <result column="updateTime" property="updateTime" />
+        <result column="updateUserId" property="updateUserId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        userId, nickName, email, imgUrl, thumUrl, createTime, updateTime, updateUserId
+    </sql>
+
+</mapper>
