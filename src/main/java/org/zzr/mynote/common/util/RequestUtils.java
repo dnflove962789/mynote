@@ -1,6 +1,7 @@
 package org.zzr.mynote.common.util;
 
 import org.springframework.http.ResponseEntity;
+import org.zzr.mynote.common.configuration.PublicConstant;
 import org.zzr.mynote.common.configuration.RequestConfig;
 
 import javax.annotation.Resource;
@@ -126,6 +127,9 @@ public class RequestUtils {
             return builder.toString();
         }
         builder.append("?");
+
+        builder.append(PublicConstant)
+
         for(String key :params.keySet()){
             builder.append(key)
                     .append("={")

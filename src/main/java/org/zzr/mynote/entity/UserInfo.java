@@ -51,7 +51,7 @@ public class UserInfo implements Serializable {
     private Integer status;
 
     @TableField(value = "isDelete",select = false)
-    @TableLogic
+    @TableLogic(value = "0", delval = "1")
     private Integer isDelete =0;
 
     @TableField(value = "updateTime",fill = FieldFill.UPDATE)

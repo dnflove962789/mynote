@@ -8,6 +8,21 @@ public class PublicConstant {
     public static final int DEFAULT_USER_TYPE = 0;
 
     /**
+     * 管理员的用户类型
+     */
+    public static final int ADMIN_USER_TYPE = 100;
+
+    /**
+     *  是否正确的用户类型
+     */
+    public static boolean isUserType(Integer userType){
+        if(userType == null){
+            return false;
+        }
+        return userType == DEFAULT_USER_TYPE || userType == ADMIN_USER_TYPE;
+    }
+
+    /**
      * 注册类型
      */
     public static final int REGISTER_TYPE = 0;
@@ -36,4 +51,21 @@ public class PublicConstant {
      * 应用名
      */
     public static String APP_NAME = "ThisIsMyNote" ;
+
+    /**
+     * 登录类型
+     */
+    public static final int LOGIN_TYPE = 1;
+
+    public static String nginxPath;
+
+    public static String nginxUrl;
+
+    public static String imgPath;
+
+    public static String thumPath;
+
+    public static final String USER_ID_KEY = "kellerUserId";
+
+    public static final String ADMIN_ID_KEY = "kellerAdminId";
 }

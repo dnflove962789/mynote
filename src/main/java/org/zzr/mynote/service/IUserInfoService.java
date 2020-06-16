@@ -1,6 +1,7 @@
 package org.zzr.mynote.service;
 
 import org.zzr.mynote.common.response.ResultData;
+import org.zzr.mynote.entity.EmailLog;
 import org.zzr.mynote.entity.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,6 +19,5 @@ public interface IUserInfoService extends IService<UserInfo> {
 
     public ResultData login(UserInfo userInfo);
 
-    ResultData loginWithCode(String email,int type,String code);
-
+    ResultData loginWithCode(EmailLog emailLog, int type);
 }

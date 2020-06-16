@@ -16,4 +16,15 @@ public class CommonConfig {
     @Value("${server.address:http://127.0.0.1}")
     public String address;
 
+    @Value("${nginx.path}")
+    public String nginxPath;
+
+    @Value("${nginx.url}")
+    public String nginxUrl;
+
+    @Value("${img.path}")
+    public String imgPath;
+
+    @Value("${thum.path}")
+    public String thumPath;
 }

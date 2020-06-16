@@ -1,5 +1,6 @@
 package org.zzr.mynote.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -9,11 +10,14 @@ import org.zzr.mynote.common.configuration.PublicConstant;
 import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.common.util.StringUtils;
 import org.zzr.mynote.entity.EmailLog;
+import org.zzr.mynote.entity.UserInfo;
 import org.zzr.mynote.mapper.EmailLogMapper;
 import org.zzr.mynote.service.IEmailLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -36,7 +40,11 @@ public class EmailLogServiceImpl extends ServiceImpl<EmailLogMapper, EmailLog> i
     @Value("${spring.mail.username}")
     private String from;
 
-
+    /**
+     * 发送邮件
+     * @param to （对方邮箱）
+     * @return ResultData
+     */
     public ResultData sendSimpleMail(String to)  {
         String subject = "注册用验证码";
         String code = StringUtils.getAllCharString(PublicConstant.EMAIL_CODE_LENGTH);
@@ -66,8 +74,6 @@ public class EmailLogServiceImpl extends ServiceImpl<EmailLogMapper, EmailLog> i
             emailLog.setStatusCode(PublicConstant.FAILED);
             return new ResultData().fail().message("发送邮件失败");
         }
-
-
     }
 
 }

@@ -9,6 +9,7 @@ import org.zzr.mynote.common.response.Response;
 import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.common.util.Console;
 import org.zzr.mynote.common.util.StringUtils;
+import org.zzr.mynote.entity.EmailLog;
 import org.zzr.mynote.entity.UserInfo;
 import org.zzr.mynote.service.IEmailLogService;
 import org.zzr.mynote.service.IUserInfoService;
@@ -100,10 +101,14 @@ public class NoLoginController {
         String email = params.get("email");
         String code = params.get("code");
         int type = Integer.parseInt(params.get("type"));
-        if(StringUtils.isEmpty(code) || !StringUtils.isEmail(email)){
+        if(StringUtils.isEmpty(code) || !StringUtils.isEmail(email) || !PublicConstant.isUserType(type)){
             return Response.badRequest();
         }
-        return Response.ok(userInfoService.loginWithCode(email, type, code));
+        EmailLog emailLog = new EmailLog();
+        emailLog.setEmail(email);
+        emailLog.setType(PublicConstant.LOGIN_TYPE);
+        emailLog.setCode(code);
+        return Response.ok(userInfoService.loginWithCode(emailLog, type));
     }
 
 

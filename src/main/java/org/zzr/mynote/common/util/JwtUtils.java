@@ -43,6 +43,11 @@ public class JwtUtils {
         return jwtBuilder.compact();
     }
 
+    /**
+     * 从jwt中获取Userinfo
+     * @param jwtString
+     * @return
+     */
     public static UserInfo getUserInfo(String jwtString){
         try {
             Claims claims = Jwts.parser()
@@ -61,6 +66,32 @@ public class JwtUtils {
             userInfo.setType(claims.get(USER_NAME_TYPE,Integer.class));
             return userInfo;
         } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("jwt解析失败");
+            log.error("jwt解析失败:"+e);
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param jwtString
+     * @return
+     */
+    public static Integer getUserId(String jwtString){
+        try{
+            Claims claims = Jwts.parser()
+                    .setSigningKey(JWT_SIGN_KEY)
+                    .parseClaimsJws(jwtString)
+                    .getBody();
+            int id = Integer.parseInt(claims.getId());
+            String subject = claims.getSubject();
+            //校验应用名
+            if(!subject.equals(PublicConstant.APP_NAME)){
+                return null;
+            }
+            return id;
+        }catch (Exception e){
             e.printStackTrace();
             System.out.println("jwt解析失败");
             log.error("jwt解析失败:"+e);
