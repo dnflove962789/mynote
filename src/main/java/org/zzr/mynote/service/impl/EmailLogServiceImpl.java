@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -73,6 +74,77 @@ public class EmailLogServiceImpl extends ServiceImpl<EmailLogMapper, EmailLog> i
             emailLog.setResult(e.getMessage());
             emailLog.setStatusCode(PublicConstant.FAILED);
             return new ResultData().fail().message("发送邮件失败");
+        }
+    }
+
+
+    /**
+     * 密码重置邮件
+     * @param email
+     * @param code
+     * @param token
+     * @return
+     */
+    public ResultData sendResetPasswordEmail(String email,String code,String token)  {
+        String subject = "来自："+PublicConstant.APP_NAME;
+        String content = "账号："+email + "重置密码,请点击："+ PublicConstant.webUrl +
+                "/ResetPassword/" + token;
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(from); // 邮件发送者
+        message.setTo(email); // 邮件接受者
+        message.setSubject(subject); // 主题
+        message.setText(content); // 内容
+
+        EmailLog emailLog = new EmailLog();
+        emailLog.setEmail(email);
+        emailLog.setType(PublicConstant.RESET_PASSWORD_TYPE);
+        emailLog.setTitle(subject);
+        emailLog.setContent(content);
+        emailLog.setCode(code);
+        emailLog.setStatusCode(PublicConstant.SUCCESS);
+        try {
+            //插入emaillog数据
+            emailLogMapper.insert(emailLog);
+            //发送邮件
+            mailSender.send(message);
+            return new ResultData().success().message("成功发送邮件");
+        } catch (Exception e) {
+            e.printStackTrace();
+            emailLog.setResult(e.getMessage());
+            emailLog.setStatusCode(PublicConstant.FAILED);
+            return new ResultData().fail().message("发送邮件失败");
+        }
+    }
+
+    /**
+     * 检验email的code
+     * @param email
+     * @param code
+     * @param type
+     * @return
+     */
+    public boolean checkCode(String email,String code,Integer type){
+        List<EmailLog> emailLogs = emailLogMapper.selectList(Wrappers.lambdaQuery(EmailLog.class)
+                .eq(EmailLog::getType, type)
+                .eq(EmailLog::getEmail, email)
+                .eq(EmailLog::getStatusCode, 0).orderByDesc(EmailLog::getId));
+        if(emailLogs == null || emailLogs.size() <= 0){
+            return false;
+        }
+        EmailLog emailLog = emailLogs.get(0);
+
+        LocalDateTime createTime = emailLog.getCreateTime();
+        LocalDateTime now = LocalDateTime.now();
+        long epochSecondNow = now.toEpochSecond(ZoneOffset.of("+8"));
+        long epochSecondCreated = createTime.toEpochSecond(ZoneOffset.of("+8"));
+        if((epochSecondNow - epochSecondCreated) > 60*5){
+            //code过期了
+            return false;
+        }
+        if(emailLog.getCode().equals(code)){
+           return true;
+        }else{
+            return false;
         }
     }
 

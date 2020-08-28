@@ -17,8 +17,8 @@ public class JWTTest {
         userInfo.setId(1001);
         userInfo.setEmail("abc@de.fg");
         userInfo.setType(1);
-        String jwtString = JwtUtils.getJwtString(userInfo);
-        System.out.println(jwtString);
+        //String jwtString = JwtUtils.getJwtString(userInfo);
+        //System.out.println(jwtString);
 
     }
 

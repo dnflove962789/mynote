@@ -20,4 +20,8 @@ public interface IUserInfoService extends IService<UserInfo> {
     public ResultData login(UserInfo userInfo);
 
     public ResultData loginWithCode(EmailLog emailLog, int type);
+
+    ResultData sendResetPasswordEmail(String email,int type);
+
+    ResultData resetPasswordByEmail(String token,String password);
 }

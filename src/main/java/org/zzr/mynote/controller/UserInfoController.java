@@ -29,8 +29,8 @@ public class UserInfoController {
     private IUserInfoService userInfoService;
 
     @RequestMapping("/getOne")
-    public void getOne(){
-        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().gt(UserInfo::getEmail, "aaa@"));
+    public void getOne(String email){
+        UserInfo userInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getEmail, email));
         System.out.println(userInfo);
     }
 

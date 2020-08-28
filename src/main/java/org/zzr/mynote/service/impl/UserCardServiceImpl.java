@@ -3,6 +3,7 @@ package org.zzr.mynote.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.common.util.FileUtils;
 import org.zzr.mynote.common.util.StringUtils;
@@ -11,6 +12,9 @@ import org.zzr.mynote.mapper.UserCardMapper;
 import org.zzr.mynote.service.IUserCardService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * <p>
@@ -65,7 +69,27 @@ public class UserCardServiceImpl extends ServiceImpl<UserCardMapper, UserCard> i
                 userCard.setProtraitUrl(FileUtils.getImgUrl(imgName));
                 userCard.setProtraitThumUrl(FileUtils.getThumUrl(imgName));
             }
+            return new ResultData().success().data(userCard);
         }
         return new ResultData().fail().message("用户名片不存在");
+    }
+
+    public ResultData setPortrait(MultipartFile file, int userId){
+        String originalFilename = file.getOriginalFilename();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
+        String fileName;
+        try {
+            fileName = FileUtils.saveImgAndThum(file,sdf.format(new Date()));
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResultData().fail().message("头像保存失败");
+        }
+        UserCard userCard = new UserCard();
+        userCard.setUserId(userId);
+        userCard.setPortraitOriginName(originalFilename);
+        userCard.setPortraitName(fileName);
+        int i = userCardMapper.updateById(userCard);
+        System.out.println(i);
+        return new ResultData().success();
     }
 }

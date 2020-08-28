@@ -3,17 +3,23 @@ package org.zzr.mynote.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.zzr.mynote.common.configuration.PublicConstant;
 import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.common.util.JwtUtils;
+import org.zzr.mynote.common.util.StringUtils;
 import org.zzr.mynote.entity.EmailLog;
+import org.zzr.mynote.entity.UserCard;
 import org.zzr.mynote.entity.UserInfo;
 import org.zzr.mynote.mapper.EmailLogMapper;
+import org.zzr.mynote.mapper.UserCardMapper;
 import org.zzr.mynote.mapper.UserInfoMapper;
+import org.zzr.mynote.service.IEmailLogService;
 import org.zzr.mynote.service.IUserInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -27,6 +33,7 @@ import java.util.List;
  * @since 2020-04-30
  */
 @Service
+@Transactional
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements IUserInfoService {
 
      @Autowired
@@ -34,6 +41,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
      @Autowired
      private EmailLogMapper emailLogMapper;
+
+     @Autowired
+     private UserCardMapper userCardMapper;
+
+     @Resource
+     private IEmailLogService emailLogService;
 
      /**
       * 用户注册
@@ -58,6 +71,14 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
           if(selectOne == null){
                //可以插入
                userInfoMapper.insert(userInfo);
+               /*//插入usercard
+               UserInfo newSelectOne = userInfoMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
+                       .eq(UserInfo::getEmail, userInfo.getEmail())
+                       .eq(UserInfo::getType, userInfo.getType()));
+               UserCard userCard = new UserCard();
+               userCard.setUserId(newSelectOne.getId());
+               userCard.setEmail(newSelectOne.getEmail());
+               userCardMapper.insert(userCard);*/
                return new ResultData().success().message("账号注册成功");
           }else{
                return new ResultData().fail().message("账号已注册");
@@ -80,7 +101,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
           }
           //校验密码
           if(userInfo.getPassword().equals(selectOne.getPassword())){
-               return new ResultData().success().data(JwtUtils.getJwtString(userInfo));
+               return new ResultData().success().data(JwtUtils.getJwtForLogin(selectOne));
           }
           return new ResultData().fail().message("账号或密码错误");
      }
@@ -105,7 +126,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
           if(userInfo == null){
                return new ResultData().fail().message("用户不存在");
           }
-          return new ResultData().success().data(JwtUtils.getJwtString(userInfo));
+          return new ResultData().success().data(JwtUtils.getJwtForLogin(userInfo));
      }
 
      /**
@@ -134,5 +155,56 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
                return false;
           }
           return true;
+     }
+
+     /**
+      * 发送重置密码邮件
+      * @param email
+      * @param type
+      * @return
+      */
+     public ResultData sendResetPasswordEmail(String email,int type){
+          UserInfo userInfo = userInfoMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
+          .eq(UserInfo::getEmail, email).eq(UserInfo::getType, type));
+          if(userInfo == null){
+               return new ResultData().fail().message("用户不存在");
+          }
+          String code = StringUtils.getAllCharString(PublicConstant.EMAIL_CODE_LENGTH);
+          String token = JwtUtils.getJwtForResetPassword(userInfo,code);
+          return emailLogService.sendResetPasswordEmail(email,code,token);
+     }
+
+     /**
+      * 通过邮件重置密码
+      * 校验 JWT，从中解析出 邮箱、用户类型、验证码
+      * 然后去 邮件发送记录中校验验证码
+      * 校验成功后重置密码
+      * @param token
+      * @param password
+      * @return
+      */
+     public ResultData resetPasswordByEmail(String token,String password){
+          UserInfo userInfo = JwtUtils.getUserInfo(token);
+          String userCode = JwtUtils.getCodeForResetPassword(token);
+
+          UserInfo result = userInfoMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
+                  .eq(UserInfo::getEmail, userInfo.getEmail()).eq(UserInfo::getType, userInfo.getType()));
+          if(result == null){
+               return new ResultData().fail().message("该邮箱尚未注册");
+          }
+          if(StringUtils.isEmpty(userCode,result.getEmail())){
+               return new ResultData().fail().message("身份验证失败");
+          }
+          if(emailLogService.checkCode(result.getEmail(), userCode, PublicConstant.RESET_PASSWORD_TYPE)){
+               //更新密码
+               UserInfo newUpdateUserInfo = new UserInfo();
+               newUpdateUserInfo.setId(result.getId());
+               newUpdateUserInfo.setPassword(password);
+               newUpdateUserInfo.setUpdateTime(LocalDateTime.now());
+               newUpdateUserInfo.setUpdateUserId(result.getId());
+               userInfoMapper.updateById(newUpdateUserInfo);
+               return new ResultData().success();
+          }
+          return new ResultData().fail().message("密码重置失败，请重试");
      }
 }

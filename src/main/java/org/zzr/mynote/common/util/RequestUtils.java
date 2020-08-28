@@ -115,22 +115,32 @@ public class RequestUtils {
         }
         return paramMap;
     }
+
+    /**
+     * 根据请求参数获取到URL，会解析请求中的 JWT，并将解析出的 UserId 拼接在请求中
+     * @param params
+     * @param request
+     * @return
+     */
     public static String getUrl(Map<String,String> params,HttpServletRequest request){
+        //从 JWT 中解析出 UserId
+        Integer userId = JwtUtils.getUserIdForLogin(request.getHeader(RequestConfig.TOKEN));
         HashMap<String,String> headers = getHeader(request);
         StringBuilder builder = new StringBuilder();
 
-        builder
-                .append(address).append(":")
-                .append(port).append("/")
+        builder.append(PublicConstant.serviceUrl).append("/")
                 .append(headers.get(RequestConfig.METHOD));
+        builder.append("?");
+        //请求参数中添加 userId
+        builder.append(PublicConstant.USER_ID_KEY).append("=").append(userId).append("&");
         if(params == null){
             return builder.toString();
         }
-        builder.append("?");
-
-        builder.append(PublicConstant)
-
         for(String key :params.keySet()){
+            //过滤校请求中的 userId
+            if(PublicConstant.USER_ID_KEY.equals(key)){
+                continue;
+            }
             builder.append(key)
                     .append("={")
                     .append(key)

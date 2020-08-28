@@ -24,7 +24,7 @@ public class UserCard implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "userId", type = IdType.AUTO)
+    @TableId(value = "userId")
     private Integer userId;
 
     @TableField("nickName")
@@ -55,9 +55,9 @@ public class UserCard implements Serializable {
 
     /**
      * 头像缩略图
-     */
+     *//*
     @TableField("thumUrl")
-    private String thumUrl;
+    private String thumUrl;*/
 
     /**
      * 个人签名
@@ -74,7 +74,9 @@ public class UserCard implements Serializable {
     @TableField("updateUserId")
     private Integer updateUserId;
 
+    @TableField(exist = false)
     private String protraitUrl;
 
+    @TableField(exist = false)
     private String protraitThumUrl;
 }

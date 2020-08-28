@@ -16,4 +16,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IEmailLogService extends IService<EmailLog> {
 
     ResultData sendSimpleMail(String to) throws MailException;
+
+    ResultData sendResetPasswordEmail(String email,String code,String token);
+
+    boolean checkCode(String email,String code,Integer type);
 }

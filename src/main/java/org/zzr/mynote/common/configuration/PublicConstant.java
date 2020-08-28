@@ -23,11 +23,6 @@ public class PublicConstant {
     }
 
     /**
-     * 注册类型
-     */
-    public static final int REGISTER_TYPE = 0;
-
-    /**
      * 邮件验证码有效期
      */
     public static final int EMAIL_CODE_TIME = 5;
@@ -53,9 +48,24 @@ public class PublicConstant {
     public static String APP_NAME = "ThisIsMyNote" ;
 
     /**
+     * 注册类型
+     */
+    public static final int REGISTER_TYPE = 0;
+
+    /**
      * 登录类型
      */
     public static final int LOGIN_TYPE = 1;
+
+    /**
+     * 重置密码类型
+     */
+    public static final int RESET_PASSWORD_TYPE = 2;
+
+    /**
+     * 服务器访问地址
+     */
+    public static String serviceUrl;
 
     public static String nginxPath;
 
@@ -65,7 +75,29 @@ public class PublicConstant {
 
     public static String thumPath;
 
+    public static String webUrl;
+
     public static final String USER_ID_KEY = "kellerUserId";
 
     public static final String ADMIN_ID_KEY = "kellerAdminId";
+
+    /**
+     * 应用启动的端口号
+     */
+    public static String port ;
+
+    /**
+     * 缩略图前缀名
+     */
+    public static final String THUM_PREFIX = "thum";
+
+    /**
+     * 缩略图最大宽度
+     */
+    public static final int THUM_MAX_WIDTH = 120;
+
+    /**
+     * 缩略图最大高度
+     */
+    public static final int THUM_MAX_HEIGHT = 120;
 }

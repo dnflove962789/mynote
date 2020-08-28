@@ -8,6 +8,7 @@ import org.zzr.mynote.common.configuration.PublicConstant;
 import org.zzr.mynote.common.response.Response;
 import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.common.util.Console;
+import org.zzr.mynote.common.util.JwtUtils;
 import org.zzr.mynote.common.util.StringUtils;
 import org.zzr.mynote.entity.EmailLog;
 import org.zzr.mynote.entity.UserInfo;
@@ -111,5 +112,45 @@ public class NoLoginController {
         return Response.ok(userInfoService.loginWithCode(emailLog, type));
     }
 
+    /**
+     * 发送邮件重置密码
+     * @param params
+     * @return
+     */
+    @PostMapping("/sendRestPasswordEmail")
+    public ResponseEntity sendResetPasswordEmail(@RequestBody Map<String, String> params){
+        String email = params.get("email");
+        String typeStr = params.get("type");
+        int type ;
+        if(typeStr == null){
+            type = PublicConstant.DEFAULT_USER_TYPE;
+        }else {
+            type= Integer.parseInt(typeStr);
+        }
+        if(StringUtils.isEmail(email)){
+            ResultData resultData = userInfoService.sendResetPasswordEmail(email, type);
+            return Response.ok(resultData);
+
+        }
+        return Response.badRequest();
+    }
+
+    /**
+     * 通过邮件重置密码，上送参数中是密码
+     * 从请求中解析 JWT
+     * @param params
+     * @return
+     */
+    @PostMapping("/resetPasswordByEmail")
+    public ResponseEntity resetPasswordByEmail(@RequestBody Map<String,String> params){
+        Console.info("resetPasswordByEmail",params);
+        String password = params.get("password");
+        String token = params.get("token");
+        if(token == null){
+            return Response.badRequest();
+        }
+        return Response.ok(userInfoService.resetPasswordByEmail(token,password));
+
+    }
 
 }

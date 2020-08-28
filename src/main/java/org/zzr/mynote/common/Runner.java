@@ -5,6 +5,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.zzr.mynote.common.configuration.CommonConfig;
+import org.zzr.mynote.common.configuration.PublicConstant;
 import org.zzr.mynote.common.util.RequestUtils;
 
 import javax.annotation.Resource;
@@ -21,9 +22,18 @@ public class Runner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        RequestUtils.port = config.port;
-        RequestUtils.address = config.address;
+        PublicConstant.port = config.port;
+        PublicConstant.serviceUrl = "http://127.0.0.1:" + config.port;
+        /*PublicConstant.appName = config.appName;
+        PublicConstant.mailServerHost = config.mailServerHost;
+        PublicConstant.mailServerUser = config.mailServerUser;
+        PublicConstant.mailServerPassword = config.mailServerPassword;*/
 
+        PublicConstant.nginxPath = config.nginxPath;
+        PublicConstant.nginxUrl = config.nginxUrl;
+        PublicConstant.imgPath = config.imgPath;
+        PublicConstant.thumPath = config.thumPath;
+        PublicConstant.webUrl = config.webUrl;
     }
 
 }

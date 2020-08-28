@@ -6,6 +6,7 @@ import org.zzr.mynote.common.configuration.PublicConstant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 public class FileUtils {
     /**
@@ -14,30 +15,23 @@ public class FileUtils {
     public static final String SUFFIX_SPLIT = ".";
 
     /**
-     * 缩略图前缀名
-     */
-    public static final String THUM_PREFIX = "thum";
-
-    /**
-     * 缩略图最大宽度
-     */
-    public static final int THUM_MAX_WIDTH = 120;
-
-    /**
-     * 缩略图最大高度
-     */
-    public static final int THUM_MAX_HEIGHT = 120;
-
-    /**
-     * 获取文件后缀名
+     * 获取文件名的后缀，如 jpg/txt等
      * @param fileName
      * @return
      */
     public static String getSuffix(String fileName){
-        return fileName.substring(fileName.indexOf(SUFFIX_SPLIT) +1);
+        return fileName.substring(fileName.lastIndexOf(SUFFIX_SPLIT) + 1);
+    }
+    /**
+     * 获取文件名的后缀和分隔符，如 .jpg/.txt等
+     * @param fileName
+     * @return
+     */
+    public static String getSuffixWithSpilt(String fileName){
+        return fileName.substring(fileName.lastIndexOf(SUFFIX_SPLIT));
     }
 
-    
+
 
     /**
      * 获取原图保存路径
@@ -63,16 +57,16 @@ public class FileUtils {
      * @return 完整的保存路径
      */
     public static String getThumPath(String fileName){
-        return PublicConstant.nginxPath + PublicConstant.thumPath + THUM_PREFIX + fileName;
+        return PublicConstant.nginxPath + PublicConstant.thumPath + PublicConstant.THUM_PREFIX + fileName;
     }
 
     /**
-     *获取压缩图访问地址
+     * 获取缩略图访问地址
      * @param fileName
      * @return
      */
-    public  static String getThumUrl(String fileName){
-        return PublicConstant.nginxUrl + PublicConstant.thumPath + THUM_PREFIX + fileName;
+    public static String getThumUrl(String fileName){
+        return PublicConstant.nginxUrl + PublicConstant.thumPath + PublicConstant.THUM_PREFIX + fileName;
     }
 
     /**
@@ -80,19 +74,16 @@ public class FileUtils {
      * @param file
      * @param name
      * @return
+     * @throws IOException
      */
-    public static String saveImg(MultipartFile file, String name)  {
-        String originalFilename = file.getOriginalFilename();
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf(SUFFIX_SPLIT));
+    public static String saveImg (MultipartFile file, String name) throws IOException {
+        //解析文件后缀名
+        String suffix = FileUtils.getSuffixWithSpilt(file.getOriginalFilename());
         //构建原图保存路径
         String fileName = name + suffix;
         //保存原图
         File img = new File(FileUtils.getImgPath(fileName));
-        try {
-            file.transferTo(img);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        file.transferTo(img);
         return fileName;
     }
 
@@ -103,24 +94,24 @@ public class FileUtils {
      * @return
      * @throws IOException
      */
-    public static String saveImgAndThum(MultipartFile file, String name)  {
-        String originalFilename = file.getOriginalFilename();
-        String suffix = originalFilename.substring(originalFilename.lastIndexOf(SUFFIX_SPLIT));
+    public static String saveImgAndThum (MultipartFile file,String name) throws IOException{
+        //解析文件后缀名
+        String suffix = FileUtils.getSuffixWithSpilt(file.getOriginalFilename());
         //构建原图保存路径
         String fileName = name + suffix;
+        String uuid = UUID.randomUUID().toString();
+        String newF = "D:\\workapp\\mynote-repository\\image\\img\\"+ uuid + suffix;
         //保存原图
-        File img = new File(FileUtils.getImgPath(fileName));
-        try {
-            file.transferTo(img);
+        //FileUtils.getImgPath(fileName)
+        File img = new File(newF);
+        file.transferTo(img);
 
-            //保存缩略图
-            File thum = new File(getThumPath(fileName));
-            Thumbnails.of(img).size(THUM_MAX_WIDTH, THUM_MAX_HEIGHT).toFile(thum);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //保存缩略图
+        String newFT = "D:\\workapp\\mynote-repository\\image\\thum\\"+ uuid + suffix;
+        File thum = new File(newFT);
+        Thumbnails.of(img).size(PublicConstant.THUM_MAX_WIDTH,PublicConstant.THUM_MAX_HEIGHT).toFile(thum);
+
         return fileName;
     }
-
 
 }
