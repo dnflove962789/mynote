@@ -16,6 +16,7 @@ import org.zzr.mynote.service.IEmailLogService;
 import org.zzr.mynote.service.IUserInfoService;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
@@ -51,49 +52,36 @@ public class NoLoginController {
 
     /**
      * 注册
-     * @param params
+     * @param
      * @return ResponseEntity
      */
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody Map<String,String> params){
-        Console.info("register",params);
-        String email = params.get("email");
-        String password = params.get("password");
-        String code = params.get("code");
-        if(StringUtils.isEmpty(password, code) || !StringUtils.isEmail(email)){
+    public ResponseEntity register(@RequestBody UserInfo userInfo){
+        if(StringUtils.isEmpty(userInfo.getPassword(), userInfo.getCode()) || !StringUtils.isEmail(userInfo.getEmail())){
             return Response.badRequest();
         }
-        UserInfo userInfo = new UserInfo();
-        userInfo.setEmail(email);
-        userInfo.setPassword(password);
         userInfo.setType(PublicConstant.DEFAULT_USER_TYPE);
         //用户注册
-        ResultData resultData = userInfoService.registerUser(userInfo, code);
+        ResultData resultData = userInfoService.registerUser(userInfo,  userInfo.getCode());
         return Response.ok(resultData);
     }
 
     /**
      * 账号密码登录
-     * @param params
+     * @param
      * @return
      */
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody Map<String,String> params){
-        String email = params.get("email");
-        String password = params.get("password");
-        int type = Integer.parseInt(params.get("type"));
-        if(StringUtils.isEmpty(password) || !StringUtils.isEmail(email)){
+    public ResponseEntity login(@RequestBody UserInfo userInfo){
+        if(StringUtils.isEmpty(userInfo.getPassword()) || !StringUtils.isEmail(userInfo.getEmail())){
             return Response.badRequest();
         }
-        UserInfo userInfo = new UserInfo();
-        userInfo.setEmail(email);
-        userInfo.setPassword(password);
-        userInfo.setType(type);
+
         return Response.ok(userInfoService.login(userInfo));
     }
 
     /**
-     * 账号密码登录
+     * 账号邮件码登录
      * @param params
      * @return
      */
@@ -114,21 +102,20 @@ public class NoLoginController {
 
     /**
      * 发送邮件重置密码
-     * @param params
+     * @param userInfo
      * @return
      */
-    @PostMapping("/sendRestPasswordEmail")
-    public ResponseEntity sendResetPasswordEmail(@RequestBody Map<String, String> params){
-        String email = params.get("email");
-        String typeStr = params.get("type");
+    @PostMapping("/sendResetPasswordEmail")
+    public ResponseEntity sendResetPasswordEmail(@RequestBody UserInfo userInfo){
+
         int type ;
-        if(typeStr == null){
+        if(userInfo.getType() == null){
             type = PublicConstant.DEFAULT_USER_TYPE;
         }else {
-            type= Integer.parseInt(typeStr);
+            type= userInfo.getType();
         }
-        if(StringUtils.isEmail(email)){
-            ResultData resultData = userInfoService.sendResetPasswordEmail(email, type);
+        if(StringUtils.isEmail(userInfo.getEmail())){
+            ResultData resultData = userInfoService.sendResetPasswordEmail(userInfo.getEmail(), type);
             return Response.ok(resultData);
 
         }
@@ -138,18 +125,15 @@ public class NoLoginController {
     /**
      * 通过邮件重置密码，上送参数中是密码
      * 从请求中解析 JWT
-     * @param params
+     * @param userInfo
      * @return
      */
     @PostMapping("/resetPasswordByEmail")
-    public ResponseEntity resetPasswordByEmail(@RequestBody Map<String,String> params){
-        Console.info("resetPasswordByEmail",params);
-        String password = params.get("password");
-        String token = params.get("token");
-        if(token == null){
+    public ResponseEntity resetPasswordByEmail(@RequestBody UserInfo userInfo){
+        if(userInfo.getToken() == null){
             return Response.badRequest();
         }
-        return Response.ok(userInfoService.resetPasswordByEmail(token,password));
+        return Response.ok(userInfoService.resetPasswordByEmail(userInfo.getToken(),userInfo.getPassword()));
 
     }
 

@@ -8,6 +8,7 @@ import org.zzr.mynote.common.configuration.PublicConstant;
 import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.common.util.JwtUtils;
 import org.zzr.mynote.common.util.StringUtils;
+import org.zzr.mynote.common.util.TokenUtils;
 import org.zzr.mynote.entity.EmailLog;
 import org.zzr.mynote.entity.UserCard;
 import org.zzr.mynote.entity.UserInfo;
@@ -101,7 +102,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
           }
           //校验密码
           if(userInfo.getPassword().equals(selectOne.getPassword())){
-               return new ResultData().success().data(JwtUtils.getJwtForLogin(selectOne));
+               return new ResultData().success().data(TokenUtils.getTokenForLogin(selectOne));
           }
           return new ResultData().fail().message("账号或密码错误");
      }
@@ -126,7 +127,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
           if(userInfo == null){
                return new ResultData().fail().message("用户不存在");
           }
-          return new ResultData().success().data(JwtUtils.getJwtForLogin(userInfo));
+          return new ResultData().success().data(TokenUtils.getTokenForLogin(userInfo));
      }
 
      /**

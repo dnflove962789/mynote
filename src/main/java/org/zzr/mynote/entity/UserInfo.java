@@ -60,5 +60,9 @@ public class UserInfo implements Serializable {
     @TableField("updateUserId")
     private Integer updateUserId;
 
+    @TableField(exist = false)
+    private String code;
 
+    @TableField(exist = false)
+    private String token;
 }

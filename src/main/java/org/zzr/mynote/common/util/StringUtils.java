@@ -20,15 +20,21 @@ public class StringUtils {
      * @param parameters 需要判断的字符串，可以是多个
      * @return
      */
-    public static boolean isEmpty(String... parameters){
-        for(String str:parameters){
-            if(str == null || str.isEmpty() || str.trim().isEmpty()){
+    public static boolean isEmpty(Object... parameters){
+        for(Object param:parameters){
+            if(param == null){
                 return true;
+            }
+            if(param instanceof String){
+                String str = (String) param;
+                if(str.isEmpty()){
+                    return true;
+                }
             }
         }
         return false;
     }
-    public static boolean isNotEmpty(String... parameters){
+    public static boolean isNotEmpty(Object... parameters){
         return !isEmpty(parameters);
     }
 
@@ -90,6 +96,27 @@ public class StringUtils {
 
     public static String getUUID(){
         return UUID.randomUUID().toString().replace("-","").toUpperCase();
+    }
+
+    /**
+     * 判断一组字符串是否有值
+     * 只要有一个字符串有值，就返回 true
+     * @param parameters
+     * @return
+     */
+    public static boolean hasValue(Object ... parameters){
+        for(Object param:parameters){
+            if(param != null){
+                if(param instanceof String){
+                    String str = (String)param;
+                    return !str.isEmpty();
+                }else{
+                    return true;
+                }
+            }
+
+        }
+        return false;
     }
 
 }
