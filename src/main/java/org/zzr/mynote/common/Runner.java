@@ -29,11 +29,15 @@ public class Runner implements ApplicationRunner {
         PublicConstant.mailServerUser = config.mailServerUser;
         PublicConstant.mailServerPassword = config.mailServerPassword;*/
 
+        PublicConstant.appName = config.appName;
         PublicConstant.nginxPath = config.nginxPath;
-        PublicConstant.nginxUrl = config.nginxUrl;
-        PublicConstant.imgPath = config.imgPath;
-        PublicConstant.thumPath = config.thumPath;
         PublicConstant.webUrl = config.webUrl;
+
+        PublicConstant.localImgPath = config.localImgPath;
+
+        PublicConstant.webImgPath = config.webImgPath;
+
+
     }
 
 }

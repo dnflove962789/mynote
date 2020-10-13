@@ -10,12 +10,14 @@ import org.zzr.mynote.common.util.JwtUtils;
 import org.zzr.mynote.common.util.StringUtils;
 import org.zzr.mynote.common.util.TokenUtils;
 import org.zzr.mynote.entity.EmailLog;
+import org.zzr.mynote.entity.LoginLog;
 import org.zzr.mynote.entity.UserCard;
 import org.zzr.mynote.entity.UserInfo;
 import org.zzr.mynote.mapper.EmailLogMapper;
 import org.zzr.mynote.mapper.UserCardMapper;
 import org.zzr.mynote.mapper.UserInfoMapper;
 import org.zzr.mynote.service.IEmailLogService;
+import org.zzr.mynote.service.ILoginLogService;
 import org.zzr.mynote.service.IUserInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -46,8 +48,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
      @Autowired
      private UserCardMapper userCardMapper;
 
-     @Resource
+     @Autowired
      private IEmailLogService emailLogService;
+
+     @Autowired
+     private ILoginLogService loginLogService;
 
      /**
       * 用户注册
@@ -55,7 +60,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
       * @param code
       * @return
       */
-     public ResultData registerUser(UserInfo userInfo, String code){
+     public ResultData registerUser(UserInfo userInfo, String code, String ip){
           EmailLog emailLog = new EmailLog();
           emailLog.setEmail(userInfo.getEmail());
           emailLog.setType(PublicConstant.REGISTER_TYPE);
@@ -72,6 +77,9 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
           if(selectOne == null){
                //可以插入
                userInfoMapper.insert(userInfo);
+
+               // 密码校验成功后记录登录日志
+               loginLogService.save(new LoginLog(selectOne.getId(), ip));
                /*//插入usercard
                UserInfo newSelectOne = userInfoMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
                        .eq(UserInfo::getEmail, userInfo.getEmail())
@@ -92,7 +100,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
       * @param userInfo
       * @return
       */
-     public ResultData login(UserInfo userInfo){
+     public ResultData login(UserInfo userInfo ,String ip){
           UserInfo selectOne = userInfoMapper.selectOne(Wrappers.lambdaQuery(UserInfo.class)
                   .eq(UserInfo::getEmail, userInfo.getEmail())
                   .eq(UserInfo::getType, userInfo.getType())
@@ -102,6 +110,9 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
           }
           //校验密码
           if(userInfo.getPassword().equals(selectOne.getPassword())){
+               // 密码校验成功后记录登录日志
+               loginLogService.save(new LoginLog(selectOne.getId(), ip));
+               //并返回用户的 JWT
                return new ResultData().success().data(TokenUtils.getTokenForLogin(selectOne));
           }
           return new ResultData().fail().message("账号或密码错误");

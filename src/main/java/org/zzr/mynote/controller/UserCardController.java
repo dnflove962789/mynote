@@ -40,12 +40,12 @@ public class UserCardController {
     /**
      * 设置用户名片接口
      */
-    @GetMapping("/setUserCard")
-    public ResponseEntity setUserCard(Integer userId, String nickName, String email, String label, @RequestBody Map<String,String> params){
-        String ff = params.get("userId");
-        if(userId != null && StringUtils.isNotEmpty(nickName,email,label)){
-            return Response.ok(
-                    userCardService.setUserCard(userId,nickName,email,label));
+    @UserLoginToken
+    @PostMapping("/setUserCard")
+    public ResponseEntity setUserCard(@RequestBody UserCard userCard, HttpServletRequest request){
+        Integer userId = TokenUtils.getUserIdFromRequest(request);
+        if(userId != null && StringUtils.isNotEmpty(userCard.getNickName(),userCard.getEmail())){
+            return Response.ok(userCardService.setUserCard(userId,userCard.getNickName(),userCard.getEmail(),userCard.getLabel()));
         }
         return Response.badRequest();
     }

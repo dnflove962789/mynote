@@ -15,9 +15,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserInfoService extends IService<UserInfo> {
 
-    public ResultData registerUser(UserInfo userInfo, String code);
+    public ResultData registerUser(UserInfo userInfo, String code, String ip);
 
-    public ResultData login(UserInfo userInfo);
+    public ResultData login(UserInfo userInfo, String ip);
 
     public ResultData loginWithCode(EmailLog emailLog, int type);
 

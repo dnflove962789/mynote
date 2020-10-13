@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zzr.mynote.mapper.NoteInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.zzr.mynote.entity.NoteInfo">
+    <result column="id" property="id" />
+        <result column="userId" property="userId" />
+        <result column="notesId" property="notesId" />
+        <result column="title" property="title" />
+        <result column="contentMD" property="contentMD" />
+        <result column="content" property="content" />
+        <result column="sort" property="sort" />
+        <result column="createTime" property="createTime" />
+        <result column="isDelete" property="isDelete" />
+        <result column="updateTime" property="updateTime" />
+        <result column="updateUserId" property="updateUserId" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        userId, notesId, title, contentMD, content, sort, createTime, isDelete, updateTime, updateUserId, type
+    </sql>
+
+</mapper>

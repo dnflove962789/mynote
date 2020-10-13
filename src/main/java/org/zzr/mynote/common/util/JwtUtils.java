@@ -45,7 +45,7 @@ public class JwtUtils {
         JwtBuilder jwtBuilder = Jwts.builder()
                 .setId(userInfo.getId() + "")
                 //设置应用名
-                .setSubject(PublicConstant.APP_NAME)
+                .setSubject(PublicConstant.appName)
                 //签发时间
                 .setIssuedAt(new Date())
                 //过期时间
@@ -76,7 +76,7 @@ public class JwtUtils {
             int id = Integer.parseInt(claims.getId());
             String subject = claims.getSubject();
             //校验应用名
-            if(!subject.equals(PublicConstant.APP_NAME)){
+            if(!subject.equals(PublicConstant.appName)){
                 return null;
             }
             UserInfo userInfo = new UserInfo();
@@ -106,7 +106,7 @@ public class JwtUtils {
                     .getBody();
             String subject = claims.getSubject();
             //校验应用名
-            if(!subject.equals(PublicConstant.APP_NAME)){
+            if(!subject.equals(PublicConstant.appName)){
                 return null;
             }
             //校验 JWT 类型

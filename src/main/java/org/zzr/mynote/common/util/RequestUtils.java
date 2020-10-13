@@ -192,4 +192,28 @@ public class RequestUtils {
         return responseEntity;
     }
 
+    public static String getRealIp(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (!isIP(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+
+        if (!isIP(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+
+        if (!isIP(ip)) {
+            ip = request.getRemoteAddr();
+        }
+
+        return ip;
+    }
+
+    private static boolean isIP(String ip){
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            return false;
+        }
+        return true;
+    }
+
 }

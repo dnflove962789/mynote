@@ -16,10 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.zzr.mynote.entity.EmailLog;
+import org.zzr.mynote.entity.LoginLog;
 import org.zzr.mynote.entity.UserInfo;
 import org.zzr.mynote.mapper.EmailLogMapper;
+import org.zzr.mynote.mapper.LoginLogMapper;
 import org.zzr.mynote.mapper.UserInfoMapper;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,6 +35,22 @@ public class UserInfoTest {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Resource
+    private LoginLogMapper mapper;
+
+    @Test
+    public void selectLog(){
+        QueryWrapper<LoginLog> loginLogQueryWrapper = new QueryWrapper<>();
+        loginLogQueryWrapper
+                .select("DATE_FORMAT(createTime,'%Y-%m-%d') as time","count(1) count")
+                .between("createTime", "2020-9-25", "2020-10-30")
+                .groupBy("time")
+                .orderByAsc("time");
+        List<Map<String, Object>> maps = mapper.selectMaps(loginLogQueryWrapper);
+        System.out.println(maps);
+
+    }
 
     @Test
     public void insert(){

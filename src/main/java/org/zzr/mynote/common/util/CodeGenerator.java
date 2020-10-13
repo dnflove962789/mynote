@@ -149,7 +149,7 @@ import java.util.*;
             // 公共父类
 //            strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
             // 写于父类中的公共字段
-            strategy.setSuperEntityColumns("id");
+            //strategy.setSuperEntityColumns("id");
             //使用模板所以暂时只使用一个表
             strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
             strategy.setControllerMappingHyphenStyle(true);

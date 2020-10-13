@@ -9,6 +9,7 @@ import org.zzr.mynote.common.response.Response;
 import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.common.util.Console;
 import org.zzr.mynote.common.util.JwtUtils;
+import org.zzr.mynote.common.util.RequestUtils;
 import org.zzr.mynote.common.util.StringUtils;
 import org.zzr.mynote.entity.EmailLog;
 import org.zzr.mynote.entity.UserInfo;
@@ -29,6 +30,9 @@ public class NoLoginController {
 
     @Resource
     private IUserInfoService userInfoService;
+
+    @Resource
+    private HttpServletRequest request;
 
     /**
      * 发送邮件验证码
@@ -62,7 +66,7 @@ public class NoLoginController {
         }
         userInfo.setType(PublicConstant.DEFAULT_USER_TYPE);
         //用户注册
-        ResultData resultData = userInfoService.registerUser(userInfo,  userInfo.getCode());
+        ResultData resultData = userInfoService.registerUser(userInfo,  userInfo.getCode(), RequestUtils.getRealIp(request));
         return Response.ok(resultData);
     }
 
@@ -77,7 +81,7 @@ public class NoLoginController {
             return Response.badRequest();
         }
 
-        return Response.ok(userInfoService.login(userInfo));
+        return Response.ok(userInfoService.login(userInfo, RequestUtils.getRealIp(request)));
     }
 
     /**

@@ -86,7 +86,7 @@ public class EmailLogServiceImpl extends ServiceImpl<EmailLogMapper, EmailLog> i
      * @return
      */
     public ResultData sendResetPasswordEmail(String email,String code,String token)  {
-        String subject = "来自："+PublicConstant.APP_NAME;
+        String subject = "来自："+PublicConstant.appName;
         String content = "账号："+email + "重置密码,请点击："+ PublicConstant.webUrl +
                 "/ResetPassword/" + token;
         SimpleMailMessage message = new SimpleMailMessage();

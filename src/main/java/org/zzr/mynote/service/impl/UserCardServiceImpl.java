@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 import org.zzr.mynote.common.response.ResultData;
 import org.zzr.mynote.common.util.FileUtils;
+import org.zzr.mynote.common.util.ImageUtils;
 import org.zzr.mynote.common.util.StringUtils;
 import org.zzr.mynote.entity.UserCard;
 import org.zzr.mynote.mapper.UserCardMapper;
@@ -66,8 +67,8 @@ public class UserCardServiceImpl extends ServiceImpl<UserCardMapper, UserCard> i
         if(userCard != null){
             String imgName = userCard.getPortraitName();
             if(StringUtils.isNotEmpty(imgName)){
-                userCard.setProtraitUrl(FileUtils.getImgUrl(imgName));
-                userCard.setProtraitThumUrl(FileUtils.getThumUrl(imgName));
+                userCard.setProtraitUrl(FileUtils.getPortraitUrl(imgName, userCard.getUserId()));
+                userCard.setProtraitThumUrl(FileUtils.getPortraitThumUrl(imgName, userCard.getUserId()));
             }
             return new ResultData().success().data(userCard);
         }
@@ -79,7 +80,7 @@ public class UserCardServiceImpl extends ServiceImpl<UserCardMapper, UserCard> i
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
         String fileName;
         try {
-            fileName = FileUtils.saveImgAndThum(file,sdf.format(new Date()));
+            fileName = ImageUtils.savePortrait(file,userId);
         }catch (Exception e){
             e.printStackTrace();
             return new ResultData().fail().message("头像保存失败");
@@ -89,7 +90,11 @@ public class UserCardServiceImpl extends ServiceImpl<UserCardMapper, UserCard> i
         userCard.setPortraitOriginName(originalFilename);
         userCard.setPortraitName(fileName);
         int i = userCardMapper.updateById(userCard);
-        System.out.println(i);
-        return new ResultData().success();
+        if(i==1){
+            return new ResultData().success();
+        }else{
+            return new ResultData().fail();
+        }
+
     }
 }

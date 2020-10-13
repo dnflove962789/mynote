@@ -10,11 +10,21 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:application.yml")
 public class CommonConfig {
+
     @Value("${server.port}")
     public String port;
 
-    @Value("http://127.0.0.1")
-    public String address;
+    @Value("${nginx.localImgPath}")
+    public  String localImgPath;
+
+    @Value("${nginx.webImgPath}")
+    public  String webImgPath;
+
+    @Value("${web.url}")
+    public String webUrl;
+
+    @Value("${app.name}")
+    public String appName;
 
     /**
      * nginx 文件目录
@@ -22,24 +32,6 @@ public class CommonConfig {
     @Value("${nginx.path}")
     public String nginxPath;
 
-    /**
-     * nginx 服务器访问地址
-     */
-    @Value("http://localhost:8081/mynote/")
-    public String nginxUrl;
 
-    /**
-     * 原图存放的相对目录
-     */
-    @Value("${img.path}")
-    public String imgPath;
 
-    /**
-     * 缩略图存放的相对目录
-     */
-    @Value("${thum.path}")
-    public String thumPath;
-
-    @Value("${web.url}")
-    public String webUrl;
 }

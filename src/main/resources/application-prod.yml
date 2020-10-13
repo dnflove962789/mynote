@@ -1,0 +1,69 @@
+# 应用名
+app:
+  name: mynote
+
+#项目端口
+server:
+  port: 8123
+
+
+spring:
+  #连接池
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    #driverClassName: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:mysql://192.168.9.95:3306/my_note?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    #url: jdbc:p6spy:mysql://localhost:3306/my_note?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 962789love
+  #邮件发送配置
+  mail:
+    host: smtp.qq.com
+    username: 470402780@qq.com
+    password: vdwynyhqbjmtbgbi
+    default-encoding: UTF-8
+
+#log配置
+logging:
+  level:
+    org.zzr.mynote.mapper: debug
+  pattern:
+    console: '%p%m%n'
+
+#mybatis-plus配置
+mybatis-plus:
+#  mapper-locations: classpath:/mapper/*Mapper.xml
+  global-config:
+    db-config:
+      logic-not-delete-value: 0
+      logic-delete-value: 1
+
+#nginx配置
+nginx:
+  # nginx 文件目录
+  #path: /Users/yangkaile/Projects/nginx/keller/
+  path: D:\\workapp\\ProjectFile
+  # nginx 服务器访问地址
+  url: http://localhost:8081/
+  # nginx 普通图片绝对路径
+  localImgPath: D:\\workapp\\ProjectFile\\mynote\\image\\img\\
+  # nginx 压缩图片绝对地址
+  localThumPath: D:\\workapp\\ProjectFile\\mynote\\image\\thum\\
+  # nginx 普通图片相对路径
+  webImgPath: http://localhost:8081/upload/mynote/image/img/
+  # nginx 压缩图片相对地址
+  webThumPath: http://localhost:8081/upload/mynote/image/thum/
+
+img:
+  # 原图存放的相对目录
+  path: upload/img/
+
+
+thum:
+  # 缩略图存放的相对目录
+  path: upload/thum/
+
+# 前端访问地址
+web:
+    url: http://127.0.0.1:8080
+

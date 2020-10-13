@@ -30,7 +30,7 @@ public class TokenUtils {
         long now = System.currentTimeMillis();
         String token="";
         token= JWT.create().withAudience(userInfo.getId().toString())// 将 user id 保存到 token 里面
-                .withSubject(PublicConstant.APP_NAME)
+                .withSubject(PublicConstant.appName)
                 .withIssuedAt(new Date(now))
                 .withExpiresAt(new Date(now + JWT_EXP_TIME))
                 .withClaim(USER_NAME_KEY, userInfo.getEmail())
@@ -56,6 +56,17 @@ public class TokenUtils {
      */
     public static Integer getUserIdFromRequest(HttpServletRequest request){
         String token = request.getHeader("token");
+        Integer userId = Integer.valueOf(JWT.decode(token).getAudience().get(0));
+        return userId;
+    }
+
+    /**
+     * 根据token解析出userid(用于admin)
+     * @param request
+     * @return
+     */
+    public static Integer getAdminUserIdFromRequest(HttpServletRequest request){
+        String token = request.getHeader("adminToken");
         Integer userId = Integer.valueOf(JWT.decode(token).getAudience().get(0));
         return userId;
     }

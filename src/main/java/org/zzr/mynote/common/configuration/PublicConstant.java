@@ -42,10 +42,7 @@ public class PublicConstant {
      */
     public static final int FAILED = 1;
 
-    /**
-     * 应用名
-     */
-    public static String APP_NAME = "ThisIsMyNote" ;
+
 
     /**
      * 注册类型
@@ -69,17 +66,20 @@ public class PublicConstant {
 
     public static String nginxPath;
 
-    public static String nginxUrl;
-
-    public static String imgPath;
-
-    public static String thumPath;
-
-    public static String webUrl;
-
     public static final String USER_ID_KEY = "kellerUserId";
 
     public static final String ADMIN_ID_KEY = "kellerAdminId";
+
+    /**
+     * 应用名
+     */
+    public static String appName;
+
+    public static String webUrl;
+    public static String localImgPath;
+    public static String webImgPath;
+
+
 
     /**
      * 应用启动的端口号
@@ -87,9 +87,24 @@ public class PublicConstant {
     public static String port ;
 
     /**
-     * 缩略图前缀名
+     * 头像缩略图前缀名
      */
     public static final String THUM_PREFIX = "thum";
+
+    /**
+     * 头像图片文件路径名
+     */
+    public static final String PORTRAIT_PREFIX = "portrait";
+
+    /**
+     *  头像图片后缀
+     */
+    public static final String PORTRAIT_TYPE = "png";
+
+    /**
+     * 笔记图片文件路径名
+     */
+    public static final String NOTE_PREFIX = "note";
 
     /**
      * 缩略图最大宽度
@@ -100,4 +115,19 @@ public class PublicConstant {
      * 缩略图最大高度
      */
     public static final int THUM_MAX_HEIGHT = 120;
+
+    /**
+     * 富文本笔记类型
+     */
+    public static final int NOTE_TYPE_RICH_TEXT = 0;
+
+
+    /**
+     * MarkDown 笔记类型
+     */
+    public static final int NOTE_TYPE_MARK_DOWN = 1;
+
+
+
+
 }
