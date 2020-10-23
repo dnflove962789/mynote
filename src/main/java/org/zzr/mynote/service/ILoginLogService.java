@@ -15,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ILoginLogService extends IService<LoginLog> {
 
     ResultData getCountByDay(String startDate, String endDate);
+
+    ResultData getCountByMonth(String startDate,String endDate);
 }

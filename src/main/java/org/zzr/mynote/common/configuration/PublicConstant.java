@@ -127,7 +127,7 @@ public class PublicConstant {
      */
     public static final int NOTE_TYPE_MARK_DOWN = 1;
 
-
+    public static final String address = "127.0.0.1";
 
 
 }

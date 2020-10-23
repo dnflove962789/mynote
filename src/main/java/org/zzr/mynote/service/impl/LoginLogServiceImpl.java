@@ -40,7 +40,7 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
         QueryWrapper<LoginLog> loginLogQueryWrapper = new QueryWrapper<>();
         loginLogQueryWrapper
                 .select("DATE_FORMAT(createTime,'%Y-%m-%d') as time","count(1) count")
-                .between("createTime", DateUtil.getDateByTime(Long.valueOf(startDate)), DateUtil.getDateByTime(Long.valueOf(endDate)))
+                .between("createTime", startDate, endDate)
                 .groupBy("time")
                 .orderByAsc("time");
         List<Map<String, Object>> maps = mapper.selectMaps(loginLogQueryWrapper);
@@ -53,12 +53,14 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
      * @param endDate   截止日期，格式 YYYY-MM-DD
      * @return
      */
-    /*public ResultData getCountByMonth(String startDate,String endDate){
-        if(StringUtils.isEmpty(endDate)){
-            endDate = DateUtils.getNextMonth(startDate);
-        }else{
-            endDate = DateUtils.getNextMonth(endDate);
-        }
-        return ResultData.success(mapper.getCountByMonth(startDate,endDate));
-    }*/
+    public ResultData getCountByMonth(String startDate,String endDate){
+        QueryWrapper<LoginLog> loginLogQueryWrapper = new QueryWrapper<>();
+        loginLogQueryWrapper
+                .select("DATE_FORMAT(createTime,'%Y-%m-%d') as time","count(1) count")
+                .between("createTime", DateUtil.getFirstDateInMonthByTime(startDate), DateUtil.getLastDateInMonthByTime(endDate))
+                .groupBy("time")
+                .orderByAsc("time");
+        List<Map<String, Object>> maps = mapper.selectMaps(loginLogQueryWrapper);
+        return new ResultData().success().data(maps);
+    }
 }

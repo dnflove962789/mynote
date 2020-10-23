@@ -73,11 +73,12 @@ public class AdminController {
 
     @AdminUserLoginToken
     @GetMapping("/loginLogByDay")
-    public ResponseEntity getLoginLogByDay(String startDate,String endDate){
+    public ResponseEntity getLoginLogByDay(String startDate,String endDate) throws Exception {
         if(StringUtils.isEmpty(startDate)){
             return Response.badRequest();
         }
-        return Response.ok(loginLogService.getCountByDay(startDate, endDate));
+        throw new Exception();
+        //return Response.ok(loginLogService.getCountByDay(startDate, endDate));
     }
 
     @AdminUserLoginToken
@@ -86,7 +87,7 @@ public class AdminController {
         if(StringUtils.isEmpty(startDate)){
             return Response.badRequest();
         }
-        return Response.ok(loginLogService.getCountByDay(startDate, endDate));
+        return Response.ok(loginLogService.getCountByMonth(startDate, endDate));
     }
 
     @AdminUserLoginToken
